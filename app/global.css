@@ -32,3 +32,60 @@ body {
   padding: 0;
   margin: 0;
 }
+
+/* --- UNIVERSAL STYLES --- */
+
+/* individual elements */
+.button {
+
+  background-color: var(--orange);
+  border: none;
+  border-radius: 6px;
+
+  width: 200px;
+  height: 50px;
+
+  font-family: var(--font);
+  font-size: 1rem;
+  font-weight: 700;
+
+  cursor: pointer;
+  transition: 200ms ease;
+}
+
+/* layout */
+.flex--between {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5em;
+}
+
+/* PAGE & SECTION STYLES*/
+
+.page {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 3em;
+}
+
+.header {
+  grid-row: 1;
+  grid-column: 3 / span 8;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 100%;
+  min-height: 10dvh;
+}
+
+.main {
+  grid-row: 2;
+  grid-column: 3 / span 8;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+  gap: 2em 1em;
+  place-items: center;
+}

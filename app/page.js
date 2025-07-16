@@ -12,9 +12,12 @@ import { getAssociatedTokenAddressSync } from "@solana/spl-token"
 // Utility to connect to the block chain
 import { AnchorProvider, Program } from "@coral-xyz/anchor"
 
+// Import components
+import Header from "./components/Header"
+
 // Import config & IDL
-import config from "@/app/config.json"
-import Crowdsale from "@/app/idl/crowdsale.json"
+// import config from "@/app/config.json"
+// import Crowdsale from "@/app/idl/crowdsale.json"
 
 
 
@@ -24,6 +27,7 @@ export default function Home() {
   const [provider, setProvider] = useState(null)
   const [anchorProvider, setAnchorProvider] = useState(null)
   const [user, setUser] = useState(null)
+  const [userBalance, setUserBalance] = useState(0)
 
   const getProvider = async () => {
     if ("phantom" in window) { // phantom installed?
@@ -49,7 +53,7 @@ export default function Home() {
           await getUserBalance(anchorProvider)
         })
         // disconnect from phantom wallet
-        provider.on("disconnect", () =>{
+        provider.on("disconnect", () => {
           setUser(null)
         })
       }
@@ -58,8 +62,19 @@ export default function Home() {
 
   }
 
+  const getUserBalance = async (anchorProvider) => {
+    const userPubKey = new PublicKey(anchorProvider.wallet)
+    const userBalance = await anchorProvider.connection.getBalance(userPubKey)
+    setUserBalance(userBalance)
+  }
+
+  useEffect(() => {
+    getProvider()
+  }, [])
+
   return (
     <div className="page">
+      <Header provider={provider} user={user} setUser={setUser} />
       <main className="main">
         <div className="hero">
           <h1>Introducing sDAPP</h1>
