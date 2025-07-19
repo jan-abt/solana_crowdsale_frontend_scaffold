@@ -1,0 +1,667 @@
+{
+  "address": "CBH9TrtBXphZkLchx1nvdjnsDY4VMYoMpiQ9Vw2MyefD",
+  "metadata": {
+    "name": "crowdsale",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "buy_tokens",
+      "docs": [
+        "Allows buying tokens from the crowdsale."
+      ],
+      "discriminator": [
+        189,
+        21,
+        230,
+        133,
+        247,
+        2,
+        110,
+        42
+      ],
+      "accounts": [
+        {
+          "name": "buyer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "buyer_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "buyer"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint_account"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "crowdsale",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "crowdsale.id",
+                "account": "Crowdsale"
+              }
+            ]
+          }
+        },
+        {
+          "name": "crowdsale_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "crowdsale_authority"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint_account"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "crowdsale_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "crowdsale.id",
+                "account": "Crowdsale"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "mint_account",
+          "writable": true
+        },
+        {
+          "name": "owner_account",
+          "docs": [
+            "It's validated by the `address = crowdsale.owner` constraint,",
+            "ensuring it matches the stored owner key—no further type checks or deserialization needed as it's just for lamport transfers."
+          ],
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u32"
+        }
+      ]
+    },
+    {
+      "name": "close_crowdsale",
+      "discriminator": [
+        117,
+        191,
+        167,
+        209,
+        144,
+        77,
+        166,
+        184
+      ],
+      "accounts": [
+        {
+          "name": "owner",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "crowdsale",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "crowdsale.id",
+                "account": "Crowdsale"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "initialize",
+      "docs": [
+        "Initializes a new crowdsale with the given ID and cost."
+      ],
+      "discriminator": [
+        175,
+        175,
+        109,
+        31,
+        13,
+        152,
+        155,
+        237
+      ],
+      "accounts": [
+        {
+          "name": "crowdsale",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "arg",
+                "path": "id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "mint_account"
+        },
+        {
+          "name": "token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "crowdsale_authority"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint_account"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "crowdsale_authority",
+          "docs": [
+            "It is derived deterministically from the crowdsale ID and seed, so no type checks or deserialization are needed—it's controlled solely by the program."
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "arg",
+                "path": "id"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "creator",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "id",
+          "type": "pubkey"
+        },
+        {
+          "name": "cost",
+          "type": "u32"
+        }
+      ]
+    },
+    {
+      "name": "withdraw_funds",
+      "docs": [
+        "Allows the owner to withdraw funds from the crowdsale."
+      ],
+      "discriminator": [
+        241,
+        36,
+        29,
+        111,
+        208,
+        31,
+        104,
+        217
+      ],
+      "accounts": [
+        {
+          "name": "owner",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "crowdsale"
+          ]
+        },
+        {
+          "name": "crowdsale",
+          "writable": true
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Crowdsale",
+      "discriminator": [
+        92,
+        137,
+        21,
+        88,
+        87,
+        126,
+        246,
+        252
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "InvalidCost",
+      "msg": "Cost must be greater than zero"
+    },
+    {
+      "code": 6001,
+      "name": "MintMismatch",
+      "msg": "Token account mint does not match provided mint"
+    },
+    {
+      "code": 6002,
+      "name": "CrowdsaleClosed",
+      "msg": "Crowdsale is closed and not accepting purchases"
+    },
+    {
+      "code": 6003,
+      "name": "InvalidAmount",
+      "msg": "Purchase amount must be greater than zero"
+    },
+    {
+      "code": 6004,
+      "name": "InsufficientTokens",
+      "msg": "Insufficient tokens in the crowdsale vault"
+    },
+    {
+      "code": 6005,
+      "name": "IncorrectPayment",
+      "msg": "Payment amount is incorrect (expected: amount * cost)"
+    },
+    {
+      "code": 6006,
+      "name": "Overflow",
+      "msg": "Arithmetic overflow during cost calculation"
+    },
+    {
+      "code": 6007,
+      "name": "InsufficientFunds",
+      "msg": "Buyer has insufficient lamports for the purchase"
+    },
+    {
+      "code": 6008,
+      "name": "Unauthorized",
+      "msg": "Only the crowdsale owner can perform this action"
+    },
+    {
+      "code": 6009,
+      "name": "CrowdsaleNotClosed",
+      "msg": "Crowdsale must be closed before withdrawing funds"
+    },
+    {
+      "code": 6010,
+      "name": "NoFundsToWithdraw",
+      "msg": "No funds available to withdraw"
+    }
+  ],
+  "types": [
+    {
+      "name": "Crowdsale",
+      "docs": [
+        "Represents a crowdsale account, storing configuration and state for token sales."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "pubkey"
+          },
+          {
+            "name": "cost",
+            "type": "u32"
+          },
+          {
+            "name": "mint_account",
+            "type": "pubkey"
+          },
+          {
+            "name": "token_account",
+            "type": "pubkey"
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": {
+                "name": "CrowdsaleStatus"
+              }
+            }
+          },
+          {
+            "name": "owner",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "CrowdsaleStatus",
+      "docs": [
+        "Represents the status of a crowdsale."
+      ],
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Open"
+          },
+          {
+            "name": "Closed"
+          }
+        ]
+      }
+    }
+  ],
+  "constants": [
+    {
+      "name": "AUTHORITY_SEED",
+      "type": "bytes",
+      "value": "[97, 117, 116, 104, 111, 114, 105, 116, 121]"
+    }
+  ]
+}
