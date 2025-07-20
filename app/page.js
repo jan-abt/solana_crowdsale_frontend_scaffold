@@ -1,7 +1,7 @@
 "use client"
 // Callback for dependency updates
-// Get or update state
-import { useEffect, useState } from "react"
+// Get or update state (useRef = prevents page rereference)
+import { useEffect, useState, useRef } from "react"
 // Utility to build address to connect to the different Solana cluster such as devnet, testnet, mainnet
 // Connect to the network
 // Help identify which addresses are Solana public keys
@@ -12,15 +12,14 @@ import { getAssociatedTokenAddressSync } from "@solana/spl-token"
 // Utility to connect to the block chain
 import { AnchorProvider, Program } from "@coral-xyz/anchor"
 
-// Import components
-import Analytics from "./components/Analytics"
-import Header from "./components/Header"
-
 // Import config & IDL
 import config from "./config.json"
 import Crowdsale from "./idl/crowdsale.json"
-import { CONFIG_FILES } from "next/dist/shared/lib/constants"
 
+// Import components
+import Analytics from "./components/Analytics"
+import Header from "./components/Header"
+import Buy from "./components/Buy"
 
 
 export default function Home() {
@@ -107,8 +106,8 @@ export default function Home() {
     const crowdsaleTokenBalance = await anchorProvider.connection.getBalance(crowdsalePDATokenKey)
     setCrowdsaleTokenBalance(crowdsaleTokenBalance)
 
-
   }
+
 
   useEffect(() => {
     getProvider()
@@ -122,11 +121,21 @@ export default function Home() {
           <h1>Introducing sDAPP</h1>
           <p>Join our community today!</p>
         </div>
-        <Analytics 
-        userBalance={userBalance} 
-        userTokenBalance={userTokenBalance} 
-        crowdsaleBalance={crowdsaleBalance} 
-        crowdsaleTokenBalance={crowdsaleTokenBalance} />
+        <Buy
+          crowdsaleCost={crowdsaleCost}
+          crowdsaleProgram={crowdsaleProgram}
+          user={user}
+          provider={provider}
+          anchorProvider={anchorProvider}
+          getUserBalance={getUserBalance}
+          getCrowdsaleBalance={getCrowdsaleBalance}
+        />
+        <Analytics
+          userBalance={userBalance}
+          userTokenBalance={userTokenBalance}
+          crowdsaleBalance={crowdsaleBalance}
+          crowdsaleTokenBalance={crowdsaleTokenBalance} />
+
 
       </main >
     </div >

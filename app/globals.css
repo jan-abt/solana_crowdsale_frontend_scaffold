@@ -167,8 +167,8 @@ a {
   gap: 2em;
 }
 
-.analytics_program,
-.analytics_user {
+.analytics__program,
+.analytics__user {
   grid-column: 3 / 11;
 
   display: flex;
@@ -176,12 +176,12 @@ a {
   flex-direction: column;
 }
 
-.analytics_program h4,
-.analytics_user h4 {
+.analytics__program h4,
+.analytics__user h4 {
   font-weight: 300;
 }
 
-.analytics_program p,
-.analytics_user p {
+.analytics__program p,
+.analytics__user p {
   font-weight: 700;
 }
