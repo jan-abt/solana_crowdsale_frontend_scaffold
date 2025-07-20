@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from "react"
 import { PublicKey } from "@solana/web3.js"
+import { getAssociatedTokenAddressSync } from "@solana/spl-token"
 
 import config from "@/app/config.json"
 
@@ -21,27 +22,39 @@ export default function Buy({
 
     const buyHandler = async () => {
         const AMOUNT = Number(buyRef.current.value) * 10 ** 9
+
+        const buyerAccount = new PublicKey(user.toJSON())
+        const ownerAccount = new PublicKey(crowdsaleProgram.provider.wallet.toJSON())
+        
+        // Derive accounts
+        const tokenMint = new PublicKey(config.TOKEN_MINT_ACCOUNT);
+        const buyerTokenAccount = getAssociatedTokenAddressSync(tokenMint, buyerAccount);
+        const crowdsaleTokenAccount = new PublicKey(config.CROWDSALE_PDA_TOKEN_ACCOUNT); // Vault ATA
+
         try {
-            const transaction = await crowdsaleProgram.methods.buyTokens(AMOUNT).account({
-                buyer: user.toString(),
-                crowdsale: config.CROWDSALE_PDA,
-                crowdsaleAutority: config.CROWDSALE_AUTHORITY_PDA,
-                mintAccount: config.TOKEN_MINT_ACCOUNT
+            const transaction = await crowdsaleProgram.methods.buyTokens(AMOUNT).accounts({
+                buyer: buyerAccount,
+                buyerTokenAccount: buyerTokenAccount,
+                crowdsale: new PublicKey(config.CROWDSALE_PDA),
+                crowdsaleTokenAccount: crowdsaleTokenAccount,
+                crowdsaleAuthority: new PublicKey(config.CROWDSALE_AUTHORITY_PDA),
+                mintAccount: tokenMint,
+                ownerAccount:  ownerAccount
             }).transaction()
 
             // Latest block state
-            const { blockHash, lastValidBlockHeight } = await anchorProvider.connection.getLatestBlockHash()
+            const { blockhash, lastValidBlockHeight } = await anchorProvider.connection.getLatestBlockhash()
 
             // Assign  the fee payer and block hash
             transaction.feePayer = new PublicKey(user)
-            transaction.blockHash = blockHash
+            transaction.recentBlockhash = blockhash
 
             // Wait for transaction to finish
             const { signature } = await provider.signAndSendTransaction(transaction)
 
-            await anchorProvider.connection, confirmTransaction({
+            await anchorProvider.connection.confirmTransaction({
                 signature,
-                blockHash,
+                blockhash,
                 lastValidBlockHeight
             })
 
@@ -49,7 +62,7 @@ export default function Buy({
             setIsLoading(true)
 
         } catch (error) {
-            console.log(`error`)
+            console.log(error)
         }
 
     }
@@ -61,7 +74,7 @@ export default function Buy({
             getCrowdsaleBalance(anchorProvider)
             setIsLoading(false)
         }
-    }, isLoading)
+    }, [isLoading])
 
 
     return (

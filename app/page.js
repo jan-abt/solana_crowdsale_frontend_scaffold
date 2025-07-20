@@ -90,7 +90,7 @@ export default function Home() {
 
     if (userTokenAccountInfo) {
       const userTokenBalance = await anchorProvider.connection.getTokenAccountBalance(userTokenAccount)
-      setUserTokenBalance(userTokenBalance.value.account)
+      setUserTokenBalance(userTokenBalance.value.amount)
     }
 
   }
