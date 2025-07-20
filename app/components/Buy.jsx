@@ -23,23 +23,14 @@ export default function Buy({
     const buyHandler = async () => {
         const AMOUNT = Number(buyRef.current.value) * 10 ** 9
 
-        const buyerAccount = new PublicKey(user.toJSON())
-        const ownerAccount = new PublicKey(crowdsaleProgram.provider.wallet.toJSON())
-        
-        // Derive accounts
-        const tokenMint = new PublicKey(config.TOKEN_MINT_ACCOUNT);
-        const buyerTokenAccount = getAssociatedTokenAddressSync(tokenMint, buyerAccount);
-        const crowdsaleTokenAccount = new PublicKey(config.CROWDSALE_PDA_TOKEN_ACCOUNT); // Vault ATA
 
         try {
             const transaction = await crowdsaleProgram.methods.buyTokens(AMOUNT).accounts({
-                buyer: buyerAccount,
-                buyerTokenAccount: buyerTokenAccount,
+                buyer: new PublicKey(user.toJSON()),
                 crowdsale: new PublicKey(config.CROWDSALE_PDA),
-                crowdsaleTokenAccount: crowdsaleTokenAccount,
                 crowdsaleAuthority: new PublicKey(config.CROWDSALE_AUTHORITY_PDA),
-                mintAccount: tokenMint,
-                ownerAccount:  ownerAccount
+                mintAccount: new PublicKey(config.TOKEN_MINT_ACCOUNT),
+                ownerAccount: new PublicKey(crowdsaleProgram.provider.wallet.toJSON())
             }).transaction()
 
             // Latest block state
