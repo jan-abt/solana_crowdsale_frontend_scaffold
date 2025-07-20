@@ -1,5 +1,5 @@
 import { Jura } from 'next/font/google'
-import "./global.css";
+import "./globals.css";
 
 export const jura = Jura({
   subsets: ['latin'],

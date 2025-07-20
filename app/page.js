@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 // Utility to build address to connect to the different Solana cluster such as devnet, testnet, mainnet
 // Connect to the network
 // Help identify which addresses are Solana public keys
-import { clusterApiUrl, Connection, PublicKey } from "@solana/web3.js"
+import { clusterApiUrl, Connection, PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js"
 // Token accounts for SPL token, read data from SPL tokens
 // in Solana each token has a differnt address
 import { getAssociatedTokenAddressSync } from "@solana/spl-token"
@@ -13,6 +13,7 @@ import { getAssociatedTokenAddressSync } from "@solana/spl-token"
 import { AnchorProvider, Program } from "@coral-xyz/anchor"
 
 // Import components
+import Analytics from "./components/Analytics"
 import Header from "./components/Header"
 
 // Import config & IDL
@@ -31,6 +32,7 @@ export default function Home() {
   const [userTokenBalance, setUserTokenBalance] = useState(0)
   const [crowdsaleProgram, setCrowdsaleProgram] = useState(null)
   const [crowdsaleBalance, setCrowdsaleBalance] = useState(0)
+  const [crowdsaleTokenBalance, setCrowdsaleTokenBalance] = useState(0)
   const [crowdsaleCost, setCrowdsaleCost] = useState(0)
 
   const getProvider = async () => {
@@ -61,11 +63,15 @@ export default function Home() {
           await getUserBalance(anchorProvider)
           await getCrowdsaleBalance(anchorProvider)
 
-         // await getCrowdsaleBalance(anchorProvider)
+          // await getCrowdsaleBalance(anchorProvider)
         })
         // disconnect from phantom wallet
         provider.on("disconnect", () => {
+          setCrowdsaleBalance(0)
+          setCrowdsaleTokenBalance(0)
           setUser(null)
+          setUserBalance(0)
+          setUserTokenBalance(0)
         })
       }
 
@@ -82,8 +88,8 @@ export default function Home() {
 
     const userTokenAccount = getAssociatedTokenAddressSync(tokenPubKey, userPubKey, true)
     const userTokenAccountInfo = await anchorProvider.connection.getAccountInfo(userTokenAccount)
-    
-    if(userTokenAccountInfo){
+
+    if (userTokenAccountInfo) {
       const userTokenBalance = await anchorProvider.connection.getTokenAccountBalance(userTokenAccount)
       setUserTokenBalance(userTokenBalance.value.account)
     }
@@ -94,12 +100,12 @@ export default function Home() {
 
     const crowdsalePDAKey = new PublicKey(config.CROWDSALE_PDA)
     const crowdsalePDATokenKey = new PublicKey(config.CROWDSALE_PDA_TOKEN_ACCOUNT)
-    
+
     const crowdsaleBalance = await anchorProvider.connection.getBalance(crowdsalePDAKey)
     setCrowdsaleBalance(crowdsaleBalance)
 
     const crowdsaleTokenBalance = await anchorProvider.connection.getBalance(crowdsalePDATokenKey)
-    setCrowdsaleBalance(crowdsaleTokenBalance)
+    setCrowdsaleTokenBalance(crowdsaleTokenBalance)
 
 
   }
@@ -116,6 +122,12 @@ export default function Home() {
           <h1>Introducing sDAPP</h1>
           <p>Join our community today!</p>
         </div>
+        <Analytics 
+        userBalance={userBalance} 
+        userTokenBalance={userTokenBalance} 
+        crowdsaleBalance={crowdsaleBalance} 
+        crowdsaleTokenBalance={crowdsaleTokenBalance} />
+
       </main >
     </div >
   );
